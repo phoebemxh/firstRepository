@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Hello World Page</title>
+    <title>Hello Phoebe!</title>
     <style>
         * {
             margin: 0;
@@ -13,27 +13,18 @@
 
         body {
             min-height: 100vh;
-            
-            /* Vibrant, energetic multi-color gradient */
             background: linear-gradient(135deg, 
-                #ff6b6b 0%,    /* coral/red */
-                #ff8e53 20%,   /* orange */
-                #f9d423 40%,   /* bright yellow */
-                #a8e063 60%,   /* lime green */
-                #4facfe 80%,   /* cyan/blue */
-                #9d4edd 100%   /* vibrant purple */
+                #ff6b6b 0%, #ff8e53 20%, #f9d423 40%, 
+                #a8e063 60%, #4facfe 80%, #9d4edd 100%
             );
-            
-            /* Optional subtle slow animation (remove if you prefer static) */
             background-size: 300% 300%;
             animation: gradientShift 18s ease infinite;
-            
             font-family: system-ui, -apple-system, sans-serif;
             color: white;
             display: flex;
             justify-content: center;
-            align-items: flex-start;   /* ← changed: align to top instead of center */
-            padding-top: 15vh;          /* some breathing room from very top */
+            align-items: flex-start;
+            padding-top: 12vh;
         }
 
         @keyframes gradientShift {
@@ -44,41 +35,75 @@
 
         .container {
             text-align: center;
-            padding: 3rem 2.5rem;
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-            
-            /* Push container higher up */
-            margin-top: -10vh;         /* negative margin lifts it up */
-            /* Alternative: transform: translateY(-15%); */
+            padding: 3.5rem 3rem;
+            background: rgba(255, 255, 255, 0.14);
+            border-radius: 24px;
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 14px 50px rgba(0, 0, 0, 0.35);
+            margin-top: -8vh;
+            max-width: 90%;
         }
 
         h1 {
-            font-size: 5.8rem;         /* slightly bigger for impact */
+            font-size: 5.5rem;
             font-weight: 900;
             letter-spacing: -3px;
-            margin-bottom: 1.2rem;
-            background: linear-gradient(90deg, #ffffff, #ffe066, #ffffff, #a5d8ff);
+            margin-bottom: 1.4rem;
+            background: linear-gradient(90deg, #ffffff, #ffe066, #a5d8ff, #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+            text-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
         }
 
-        p {
-            font-size: 1.6rem;
-            opacity: 0.92;
-            letter-spacing: 0.6px;
+        .intro {
+            font-size: 1.8rem;
+            margin: 1.2rem 0 2.5rem;
+            opacity: 0.95;
+            letter-spacing: 0.7px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(90deg, #ff3366, #ff6b6b, #ff8e53);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(255, 51, 102, 0.4);
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 14px 40px rgba(255, 51, 102, 0.6);
+            background: linear-gradient(90deg, #ff4d4d, #ff8c66, #ffb366);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Hello World!</h1>
-        <p>This is my first beautiful webpage </p>
+        <p class="intro">I'm Phoebe Lee 🌸<br>Welcome to my colorful corner of the internet!</p>
+        
+        <a 
+            href="https://www.youtube.com/watch?v=x6-2ER1IVzo" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="btn"
+        >
+            Play My Favorite Song 🎵
+        </a>
     </div>
 </body>
 </html>
