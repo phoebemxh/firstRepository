@@ -16,12 +16,14 @@
             --container-bg: rgba(255, 255, 255, 0.14);
             --container-border: rgba(255, 255, 255, 0.3);
             --shadow-color: rgba(0, 0, 0, 0.35);
+            --btn-gradient:linear-gradient(90deg, #ff8e53,  #f9d423);
         }
 
         body.dark {
             --bg-gradient: linear-gradient(135deg, #2c0b3c 0%, #4a148c 20%, #7b1fa2 40%, #ab47bc 60%, #d81b60 80%, #f06292 100%);
             --text-color: #f0e6ff;
             --container-bg: rgba(30, 10, 50, 0.5);
+            --btn-gradient:linear-gradient(90deg, #9d4edd, #4facfe);
         }
 
         body {
@@ -63,7 +65,7 @@
             font-size: 4.8rem;
             font-weight: 900;
             margin-bottom: 0.8rem;
-            background: linear-gradient(90deg, #fff, #ffe066);
+            /*background: linear-gradient(90deg, #fff, #ffe066);*/
             /*-webkit-background-clip: text;
             -webkit-text-fill-color: transparent;*/
         }
@@ -115,6 +117,7 @@
             z-index: 1000;
         }
 
+
         .puzzle-modal.active { display: flex; } /*display:none;(default) When .active is added, becomes display:flex; so it appears*/
 
         .puzzle-container {
@@ -145,6 +148,25 @@
         }
 
         .puzzle-piece:active { cursor: grabbing; }   /* when clicks and holds, cursor changes to grabbing icon*/
+
+        .puzzle-grid.solved {
+            margin: 0;
+            gap: 0px;
+            padding: 0;
+        }
+
+        .puzzle-piece.solved {
+            border-color: #4caf50;
+            box-shadow: 0 0 20px #4caf50;
+            /*cursor: default !important;*/
+            /*opacity: 0.95;*/
+            border-radius: 0;
+            margin: 0;
+        }
+
+        .puzzle-piece.solved:active {
+            transform: none;
+        }
 
         #theme-toggle {
             position: fixed;
@@ -186,7 +208,7 @@
             <p class="intro">I'm Phoebe Lee 🌸<br>Welcome to my webpage</p>
 
             <!-- About Me -->
-            <button @click="showAbout = !showAbout" class="btn">
+            <button @click="showAbout = !showAbout" class="btn" >
                 {{ showAbout ? 'Hide About Me' : 'Learn About Me' }}
             </button>
             <div v-if="showAbout" class="about-section">
@@ -195,7 +217,7 @@
             </div>
 
             <!-- Fun Facts -->
-            <button @click="funFact = !funFact" class="btn">
+            <button @click="funFact = !funFact" class="btn" >
                 {{ funFact ? 'Hide Fun Facts' : 'My Fun Facts' }}
             </button>
             <div v-if="funFact" class="fun-facts-section">
@@ -224,8 +246,7 @@
             </div>
 
             <!-- Puzzle Button -->
-            <button @click="openPuzzle" class="btn" 
-                    style="background: linear-gradient(90deg, #9d4edd, #4facfe);">
+            <button @click="openPuzzle" class="btn" >
                 See My Favourite Cartoon Character 🧩
             </button>
 
@@ -242,15 +263,19 @@
         <!-- Snoopy Puzzle Modal -->
         <div class="puzzle-modal" :class="{ active: showPuzzle }">   <!--when showPuzzle is true, add class active, work with css display=flex-->
             <div class="puzzle-container">
-                <h2 style="text-align:center; margin-bottom: 20px;">Snoopy Puzzle 🐶</h2>
-                <div class="puzzle-grid">
+                <h2 style="text-align:center; margin-bottom: 20px;">Snoopy Puzzle 🐶
+                    <span v-if="isSolved" style="color:#4caf50; font-size:1.1rem;">(Solved! 🎉)</span>
+                    <span v-if="!isSolved" style="color:#4caf50; font-size:1.1rem;">(Drag the pieces)</span>
+                </h2>
+                <div class="puzzle-grid" :class="{ solved: isSolved }">
                     <div v-for="(piece, i) in puzzlePieces"
                          :key="i"
                          class="puzzle-piece"
+                         :class="{ solved: isSolved }"
                          :style="{ backgroundPosition: piece.pos }"
-                         draggable="true"
+                         draggable="!isSolved"
                          @dragstart="dragStart($event, i)"
-                         @dragover.prevent
+                         @dragover.prevent = "!isSolved"
                          @drop="drop($event, i)">
                     </div>
                 </div>
@@ -271,6 +296,7 @@
                     showAbout: false,
                     funFact: false,
                     showPuzzle: false,
+                    isSolved: false,
                     clickCount: 0,
                     songUrl: "https://www.youtube.com/watch?v=x6-2ER1IVzo",
                     puzzlePieces: [
@@ -318,6 +344,7 @@
 
                 openPuzzle() {
                     this.showPuzzle = true;
+                    this.isSolved = false;
                     // Shuffle the puzzle pieces when opened
                     this.puzzlePieces = this.puzzlePieces.sort(() => Math.random() - 0.5);
                 },
@@ -337,6 +364,7 @@
                     const currentOrder = this.puzzlePieces.map(piece => piece.pos); //for each piece take the pos value
 
                     if (JSON.stringify(currentOrder) === JSON.stringify(correctOrder)) {
+                        this.isSolved = true;
                         setTimeout(() => {
                             alert("🎉 Congratulations! You solved the Snoopy Puzzle! 🐶");
                             // this.closePuzzle();
@@ -345,6 +373,7 @@
                 },
 
                 dragStart(e, index) { //works fine without e
+                    if (this.isSolved) return;
                     this.draggedIndex = index;
                 },
 
