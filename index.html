@@ -5,40 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Hello Phoebe!</title>
 
-    <!-- cdn, no installation required-->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script> <!--import vue-->
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; } 
 
-        :root {
-            /* Light mode (default) colors */
+        :root {   /*style in light mode (default)*/
             --bg-gradient: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 20%, #f9d423 40%, #a8e063 60%, #4facfe 80%, #9d4edd 100%);
             --text-color: white;
             --container-bg: rgba(255, 255, 255, 0.14);
             --container-border: rgba(255, 255, 255, 0.3);
             --shadow-color: rgba(0, 0, 0, 0.35);
-            --btn-gradient: linear-gradient(90deg, #ff3366, #ff6b6b, #ff8e53);
-            --btn-hover-gradient: linear-gradient(90deg, #ff4d4d, #ff8c66, #ffb366);
-            --btn-shadow: rgba(255, 51, 102, 0.4);
-            --btn-hover-shadow: rgba(255, 51, 102, 0.6);
         }
 
         body.dark {
-            /* Dark mode colors */
             --bg-gradient: linear-gradient(135deg, #2c0b3c 0%, #4a148c 20%, #7b1fa2 40%, #ab47bc 60%, #d81b60 80%, #f06292 100%);
             --text-color: #f0e6ff;
             --container-bg: rgba(30, 10, 50, 0.5);
-            --container-border: rgba(200, 150, 255, 0.25);
-            --shadow-color: rgba(0, 0, 0, 0.6);
-            --btn-gradient: linear-gradient(90deg, #9c27b0, #d81b60, #ff4081);
-            --btn-hover-gradient: linear-gradient(90deg, #ab47bc, #ec407a, #ff80ab);
-            --btn-shadow: rgba(156, 39, 176, 0.5);
-            --btn-hover-shadow: rgba(156, 39, 176, 0.7);
         }
 
         body {
@@ -51,126 +34,117 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding-top: 12vh;
-            /*transition: background 0.5s ease;   deleted*/
-            /*overflow: hidden;*/           /* for floating elements */
+            padding-top: 10vh;
             position: relative;
-        }
-
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;       /* So they don't block clicks */
-            z-index: 1;                 /* Under container, above background */
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            animation: float 15s infinite linear;
-            box-shadow: 0 0 25px rgba(255,255,255,0.3);
-        }
-
-        .music-note {
-            position: absolute;
-            font-size: 2.2rem;
-            opacity: 0.25;
-            animation: floatNote 18s infinite linear;
-            user-select: none;
-        }
-
-        @keyframes float {
-            0%   { transform: translateY(100vh) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
-        }
-
-        @keyframes floatNote {
-            0%   { transform: translateY(100vh) rotate(-20deg); }
-            100% { transform: translateY(-100px) rotate(20deg); }
+            overflow-x: hidden;
         }
 
         @keyframes gradientShift {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
         .container {
-            z-index: 2;                    /* Higher than floating elements */
-            position: relative;            /* Important */
-            text-align: center;
-            padding: 3.5rem 3rem;
+            z-index: 3;
+            position: relative;
+            max-width: 900px;
+            width: 90%;
             background: var(--container-bg);
             border-radius: 24px;
             backdrop-filter: blur(14px);
             border: 1px solid var(--container-border);
             box-shadow: 0 14px 50px var(--shadow-color);
-            margin-top: -8vh;
-            max-width: 90%;
-            transition: all 0.4s ease;
-            margin-bottom: 50px;
+            padding: 3rem;
+            text-align: center;
         }
 
         h1 {
-            font-size: 5.5rem;
+            font-size: 4.8rem;
             font-weight: 900;
-            letter-spacing: -3px;
-            margin-bottom: 1.4rem;
-            background: linear-gradient(90deg, #ffffff, #ffe066, #a5d8ff, #ffffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
-        }
-
-        .intro {
-            font-size: 1.8rem;
-            margin: 1.2rem 0 2.5rem;
-            opacity: 0.95;
-            letter-spacing: 0.7px;
-        }
-
-        .about-section {
-            margin-top: 2rem;
-            padding: 2rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            text-align: left;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(90deg, #fff, #ffe066);
+            /*-webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;*/
         }
 
         .btn {
-            display: inline-block;
             padding: 1rem 2.5rem;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: white;
             background: var(--btn-gradient);
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            text-decoration: none;
+            margin: 0.8rem 0.5rem;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 30px var(--btn-shadow);
-            margin-top: 1rem;
         }
 
         .btn:hover {
-            transform: translateY(-4px) scale(1.08);
-            box-shadow: 0 14px 40px var(--btn-hover-shadow);
-            background: var(--btn-hover-gradient);
+            transform: translateY(-5px) scale(1.05);
         }
 
-        .btn:active {
-            transform: translateY(-1px); /*active state disappear when release mouse*/
+        .about-section, .fun-facts-section {
+            margin-top: 2.5rem;
+            text-align: left;
         }
+
+        .fun-facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-top: 1rem;
+        }
+
+        .fact-card {
+            background: rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+        }
+
+        .puzzle-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .puzzle-modal.active { display: flex; } /*display:none;(default) When .active is added, becomes display:flex; so it appears*/
+
+        .puzzle-container {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            color: #333;
+        }
+
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);     /*make 2 columns with equal column space(1 fraction)*/
+            gap: 10px;
+            width: 420px;
+            height: 420px;
+        }
+
+        .puzzle-piece {
+            width: 200px;
+            height: 200px;
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf4gm6_iWx7Yp8c4eaNonCs64qdkzMcky0lw&s');
+            background-size: 400px 400px;
+            border: 3px solid #fff;
+            border-radius: 12px;
+            cursor: grab;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .puzzle-piece:active { cursor: grabbing; }   /* when clicks and holds, cursor changes to grabbing icon*/
 
         #theme-toggle {
             position: fixed;
@@ -202,49 +176,91 @@
 
     <div id="app">
         
-        <button 
-            id="theme-toggle" 
-            @click="toggleTheme"
-            aria-label="Toggle dark mode">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" @click="toggleTheme">
             {{ isDark ? '☀️' : '🌙' }}
         </button>
-
-        <div class="floating-elements">
-            <!-- Floating Orbs -->
-            <div class="orb" style="width:80px; height:80px; left:10%; animation-duration: 22s;"></div>
-            <div class="orb" style="width:120px; height:120px; left:25%; animation-duration: 28s; animation-delay: -8s;"></div>
-            <div class="orb" style="width:60px; height:60px; left:70%; animation-duration: 19s; animation-delay: -5s;"></div>
-            <div class="orb" style="width:90px; height:90px; left:85%; animation-duration: 25s; animation-delay: -12s;"></div>
-
-            <!-- Floating Music Notes -->
-            <div class="music-note" style="left:15%; animation-delay: 0s;">♪</div>
-            <div class="music-note" style="left:35%; animation-delay: 4s;">♫</div>
-            <div class="music-note" style="left:55%; animation-delay: 9s;">♬</div>
-            <div class="music-note" style="left:75%; animation-delay: 2s;">♪</div>
-        </div>
 
         <div class="container">
             <h1>Hello World!</h1>
             <p class="intro">I'm Phoebe Lee 🌸<br>Welcome to my webpage</p>
-            
+
+            <!-- About Me -->
             <button @click="showAbout = !showAbout" class="btn">
                 {{ showAbout ? 'Hide About Me' : 'Learn About Me' }}
             </button>
             <div v-if="showAbout" class="about-section">
                 <h2>About Me 🌟</h2>
-                <p>music is my daily fuel</p>
+                <p>Music is my daily fuel. I love creating beautiful and interactive web experiences.</p>
             </div>
+
+            <!-- Fun Facts -->
+            <button @click="funFact = !funFact" class="btn">
+                {{ funFact ? 'Hide Fun Facts' : 'My Fun Facts' }}
+            </button>
+            <div v-if="funFact" class="fun-facts-section">
+                <div class="fun-facts-grid">
+                    <div class="fact-card">
+                        <span class="emoji">🌈</span>
+                        <h3>Color Addict</h3>
+                        <p>I can't live without bright and happy colors</p>
+                    </div>
+                    <div class="fact-card">
+                        <span class="emoji">🎵</span>
+                        <h3>Music Lover</h3>
+                        <p>I listen to music almost every day</p>
+                    </div>
+                    <div class="fact-card">
+                        <span class="emoji">🌟</span>
+                        <h3>Creative Soul</h3>
+                        <p>I love making things look beautiful</p>
+                    </div>
+                    <div class="fact-card">
+                        <span class="emoji">☕</span>
+                        <h3>Coffee + Code</h3>
+                        <p>My perfect combo for a productive day</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Puzzle Button -->
+            <button @click="openPuzzle" class="btn" 
+                    style="background: linear-gradient(90deg, #9d4edd, #4facfe);">
+                See My Favourite Cartoon Character 🧩
+            </button>
+
             <button @click="playSong" class="btn">
                 Play My Favorite Song 🎵
             </button>
 
             <p style="margin-top: 2rem; font-size: 1.3rem; opacity: 0.9;">
-                Play button clicked <strong>{{ clickCount }}</strong> times ✨
+                You have heard the song <strong>{{ clickCount }}</strong> times ✨   <!--strong means bold-->
+                
             </p>
         </div>
 
+        <!-- Snoopy Puzzle Modal -->
+        <div class="puzzle-modal" :class="{ active: showPuzzle }">   <!--when showPuzzle is true, add class active, work with css display=flex-->
+            <div class="puzzle-container">
+                <h2 style="text-align:center; margin-bottom: 20px;">Snoopy Puzzle 🐶</h2>
+                <div class="puzzle-grid">
+                    <div v-for="(piece, i) in puzzlePieces"
+                         :key="i"
+                         class="puzzle-piece"
+                         :style="{ backgroundPosition: piece.pos }"
+                         draggable="true"
+                         @dragstart="dragStart($event, i)"
+                         @dragover.prevent
+                         @drop="drop($event, i)">
+                    </div>
+                </div>
+                <button @click="closePuzzle" style="margin-top:20px; padding:12px 30px; background:#ff6b6b; color:white; border:none; border-radius:30px; cursor:pointer;">
+                    Close Puzzle
+                </button>
+            </div>
+        </div>
     </div>
-    
+
     <script>
         const { createApp } = Vue;
 
@@ -253,23 +269,37 @@
                 return {
                     isDark: false,
                     showAbout: false,
+                    funFact: false,
+                    showPuzzle: false,
                     clickCount: 0,
-                    songUrl: "https://www.youtube.com/watch?v=x6-2ER1IVzo"
+                    songUrl: "https://www.youtube.com/watch?v=x6-2ER1IVzo",
+                    puzzlePieces: [
+                        { id: 0, pos: '0% 0%' },
+                        { id: 1, pos: '100% 0%' },
+                        { id: 2, pos: '0% 100%' },
+                        { id: 3, pos: '100% 100%' }
+                    ],
+                    draggedIndex: null
                 }
             },
             mounted() {
-                // Check saved theme
                 const savedTheme = localStorage.getItem('theme');
                 if (savedTheme === 'dark' || 
                     (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     this.isDark = true;
                     document.body.classList.add('dark');
                 }
+
+
+                const savedCount = localStorage.getItem('clickCount');
+                if (savedCount !== null){
+                    this.clickCount = savedCount;
+                }
+                
             },
             methods: {
                 toggleTheme() {
                     this.isDark = !this.isDark;
-                    
                     if (this.isDark) {
                         document.body.classList.add('dark');
                         localStorage.setItem('theme', 'dark');
@@ -278,13 +308,56 @@
                         localStorage.setItem('theme', 'light');
                     }
                 },
+
                 playSong() {
+                    //this.clickCount++;
                     this.clickCount++;
-                    window.open(this.songUrl, "_blank");
+                    localStorage.setItem('clickCount', this.clickCount);
+                    window.open(this.songUrl, "_self");
+                },
+
+                openPuzzle() {
+                    this.showPuzzle = true;
+                    // Shuffle the puzzle pieces when opened
+                    this.puzzlePieces = this.puzzlePieces.sort(() => Math.random() - 0.5);
+                },
+
+                closePuzzle() {
+                    this.showPuzzle = false;
+                },
+
+                checkWin() {
+                    const correctOrder = [
+                        '0% 0%',      // Top-left
+                        '100% 0%',    // Top-right
+                        '0% 100%',    // Bottom-left
+                        '100% 100%'   // Bottom-right
+                    ];
+
+                    const currentOrder = this.puzzlePieces.map(piece => piece.pos); //for each piece take the pos value
+
+                    if (JSON.stringify(currentOrder) === JSON.stringify(correctOrder)) {
+                        setTimeout(() => {
+                            alert("🎉 Congratulations! You solved the Snoopy Puzzle! 🐶");
+                            // this.closePuzzle();
+                        }, 400); // Small delay so user sees the last move
+                    }
+                },
+
+                dragStart(e, index) { //works fine without e
+                    this.draggedIndex = index;
+                },
+
+                drop(e, dropIndex) {
+                    if (this.draggedIndex === null) return;
+                    const temp = this.puzzlePieces[this.draggedIndex];
+                    this.puzzlePieces[this.draggedIndex] = this.puzzlePieces[dropIndex];
+                    this.puzzlePieces[dropIndex] = temp;
+                    this.draggedIndex = null;
+                    this.checkWin();
                 }
             }
         }).mount('#app');
     </script>
-
 </body>
 </html>
