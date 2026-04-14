@@ -153,7 +153,7 @@
             border-radius: 12px;
             cursor: grab;
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            touch-action: none;
+            touch-action: none;  /*very important*/
         }
 
         .puzzle-piece:active { cursor: grabbing; }   /* when clicks and holds, cursor changes to grabbing icon*/
@@ -288,7 +288,7 @@
                          :style="{ backgroundPosition: piece.pos }"
                          :draggable="isSolved ? 'false' : 'true'"
                          @dragstart="dragStart($event, i)"
-                         @dragover.prevent = "!isSolved"
+                         @dragover="dragOver($event)"
                          @drop="drop($event, i)"
                          @dragend="dragEnd($event,i)">
                     </div>
@@ -401,10 +401,18 @@
                     this.draggedIndex = index;
                     const piece = e.target;
                     piece.style.opacity = '0.6';
+                    e.dataTransfer.setData('text/plain', '');   // Firefox fix
                     e.dataTransfer.effectAllowed = 'move'; // makes the dragged image follow your cursor better
 
                     // Use the piece itself as the drag image
                     e.dataTransfer.setDragImage(piece, 100, 100);   // 100,100 = center of the piece
+                },
+
+                dragOver(e) {
+                    if (!this.isSolved) {
+                        e.preventDefault();           // Very important for Firefox
+                        e.dataTransfer.dropEffect = 'move';
+                    }
                 },
 
                 drop(e, dropIndex) {
