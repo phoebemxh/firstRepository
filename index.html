@@ -153,6 +153,7 @@
             border-radius: 12px;
             cursor: grab;
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            touch-action: none;
         }
 
         .puzzle-piece:active { cursor: grabbing; }   /* when clicks and holds, cursor changes to grabbing icon*/
@@ -285,7 +286,7 @@
                          class="puzzle-piece"
                          :class="{ solved: isSolved }"
                          :style="{ backgroundPosition: piece.pos }"
-                         draggable="!isSolved"
+                         :draggable="isSolved ? 'false' : 'true'"
                          @dragstart="dragStart($event, i)"
                          @dragover.prevent = "!isSolved"
                          @drop="drop($event, i)"
