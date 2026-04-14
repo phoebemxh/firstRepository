@@ -120,6 +120,14 @@
 
         .puzzle-modal.active { display: flex; } /*display:none;(default) When .active is added, becomes display:flex; so it appears*/
 
+        /* === Vanilla Puzzle Modal === */
+        #vanillaPuzzleModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); display: none; align-items: center;
+            justify-content: center; z-index: 2000;
+        }
+        #vanillaPuzzleModal.active { display: flex; }
+
         .puzzle-container {
             background: white;
             padding: 25px;
@@ -245,9 +253,13 @@
                 </div>
             </div>
 
-            <!-- Puzzle Button -->
             <button @click="openPuzzle" class="btn" >
                 See My Favourite Cartoon Character 🧩
+            </button>
+
+            <!-- Plain Puzzle Button -->
+            <button onclick="openVanillaPuzzle()" class="btn" style="background: linear-gradient(90deg, #4facfe, #9d4edd);">
+                Snoopy Puzzle (Plain HTML) 🧩
             </button>
 
             <button @click="playSong" class="btn">
@@ -276,13 +288,24 @@
                          draggable="!isSolved"
                          @dragstart="dragStart($event, i)"
                          @dragover.prevent = "!isSolved"
-                         @drop="drop($event, i)">
+                         @drop="drop($event, i)"
+                         @dragend="dragEnd($event,i)">
                     </div>
                 </div>
                 <button @click="closePuzzle" style="margin-top:20px; padding:12px 30px; background:#ff6b6b; color:white; border:none; border-radius:30px; cursor:pointer;">
                     Close Puzzle
                 </button>
             </div>
+        </div>
+    </div>
+
+    <div id="vanillaPuzzleModal">
+        <div class="puzzle-container">
+            <h2>Snoopy Puzzle (Plain HTML) 🐶</h2>
+            <div id="vanillaGrid" class="puzzle-grid"></div>
+            <button onclick="closeVanillaPuzzle()" style="margin-top:20px; padding:12px 30px; background:#ff6b6b; color:white; border:none; border-radius:30px; cursor:pointer;">
+                Close Puzzle
+            </button>
         </div>
     </div>
 
@@ -372,9 +395,15 @@
                     }
                 },
 
-                dragStart(e, index) { //works fine without e
+                dragStart(e, index) { 
                     if (this.isSolved) return;
                     this.draggedIndex = index;
+                    const piece = e.target;
+                    piece.style.opacity = '0.6';
+                    e.dataTransfer.effectAllowed = 'move'; // makes the dragged image follow your cursor better
+
+                    // Use the piece itself as the drag image
+                    e.dataTransfer.setDragImage(piece, 100, 100);   // 100,100 = center of the piece
                 },
 
                 drop(e, dropIndex) {
@@ -384,9 +413,85 @@
                     this.puzzlePieces[dropIndex] = temp;
                     this.draggedIndex = null;
                     this.checkWin();
+                },
+                dragEnd(e) {
+                e.target.style.opacity = '1';   // Restore original opacity
+                this.draggedIndex = null;
                 }
             }
         }).mount('#app');
+
+        // ==================== VANILLA JAVASCRIPT PUZZLE ====================
+        let draggedIndex = null;
+
+        function createVanillaPuzzle() {
+            const grid = document.getElementById('vanillaGrid');
+            grid.innerHTML = '';
+
+            const positions = ['0% 0%', '100% 0%', '0% 100%', '100% 100%'];
+            positions.sort(() => Math.random() - 0.5);
+
+            positions.forEach((pos, i) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.draggable = true;
+                piece.style.backgroundPosition = pos;
+                piece.dataset.index = i;
+
+                piece.addEventListener('dragstart', dragStart);
+                piece.addEventListener('dragover', e => e.preventDefault());
+                piece.addEventListener('drop', drop);
+                piece.addEventListener('dragend', dragEnd);
+
+                grid.appendChild(piece);
+            });
+        }
+
+        function dragStart(e) {
+            draggedIndex = parseInt(e.target.dataset.index);
+            e.target.style.opacity = '0.6';
+        }
+
+        function dragEnd(e) {
+            e.target.style.opacity = '1';
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const targetIndex = parseInt(e.target.dataset.index);
+            if (draggedIndex === null || draggedIndex === targetIndex) return;
+
+            const grid = document.getElementById('vanillaGrid');
+            const pieces = Array.from(grid.children);
+
+            // Swap background positions
+            const temp = pieces[draggedIndex].style.backgroundPosition;
+            pieces[draggedIndex].style.backgroundPosition = pieces[targetIndex].style.backgroundPosition;
+            pieces[targetIndex].style.backgroundPosition = temp;
+
+            checkVanillaWin();
+        }
+
+        function checkVanillaWin() {
+            const correct = ['0% 0%', '100% 0%', '0% 100%', '100% 100%'];
+            const current = Array.from(document.getElementById('vanillaGrid').children)
+                                .map(p => p.style.backgroundPosition);
+
+            if (JSON.stringify(current) === JSON.stringify(correct)) {
+                setTimeout(() => {
+                    alert("🎉 Congratulations! You solved the Snoopy Puzzle! 🐶");
+                }, 300);
+            }
+        }
+
+        function openVanillaPuzzle() {
+            document.getElementById('vanillaPuzzleModal').classList.add('active');
+            createVanillaPuzzle();
+        }
+
+        function closeVanillaPuzzle() {
+            document.getElementById('vanillaPuzzleModal').classList.remove('active');
+        }
     </script>
 </body>
 </html>
