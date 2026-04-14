@@ -242,8 +242,9 @@
                 {{ showAbout ? 'Hide About Me' : 'Learn About Me' }}
             </button>
             <div v-if="showAbout" class="about-section">
-                <h2>About Me 🌟</h2>
-                <p>Music is my daily fuel. I love creating beautiful and interactive web experiences.</p>
+                <p style="text-align: center;">Hi! I'm Phoebe Lee. I'm passionate about creating beautiful websites. 
+                    Music and colours keep me inspired while I design and code. 
+                    I love turning ideas into warm, welcoming digital experiences.</p>
             </div>
 
             <!-- Fun Facts -->
@@ -252,11 +253,6 @@
             </button>
             <div v-if="funFact" class="fun-facts-section">
                 <div class="fun-facts-grid">
-                    <div class="fact-card">
-                        <span class="emoji">🌈</span>
-                        <h3>An unusual experience</h3>
-                        <p>I had tadpoles, and they grew into frogs</p>
-                    </div>
                     <div class="fact-card">
                         <span class="emoji">🎵</span>
                         <h3>Music Lover</h3>
@@ -268,9 +264,14 @@
                         <p>I do not like chocolate</p>
                     </div>
                     <div class="fact-card">
-                        <span class="emoji">☕</span>
-                        <h3>Tea + Code</h3>
-                        <p>My perfect combo for a productive day</p>
+                        <span class="emoji">📺</span>
+                        <h3>Reality TV addict</h3>
+                        <p>The unexpecting moments are so entertaining!</p>
+                    </div>
+                    <div class="fact-card">
+                        <span class="emoji">🐸</span>
+                        <h3>An unusual experience</h3>
+                        <p>I had tadpoles, and they grew into frogs</p>
                     </div>
                 </div>
             </div>
@@ -392,7 +393,7 @@
                     this.isSolved = false;
                     // Shuffle the puzzle pieces when opened
                     this.puzzlePieces = this.puzzlePieces.sort(() => Math.random() - 0.5);
-                    this.checkWin();
+                    this.checkWin(); // must use this pointer to call function
                 },
 
                 closePuzzle() {
