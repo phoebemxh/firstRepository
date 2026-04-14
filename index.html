@@ -392,6 +392,7 @@
                     this.isSolved = false;
                     // Shuffle the puzzle pieces when opened
                     this.puzzlePieces = this.puzzlePieces.sort(() => Math.random() - 0.5);
+                    checkWin();
                 },
 
                 closePuzzle() {
@@ -455,11 +456,13 @@
         // ==================== VANILLA JAVASCRIPT PUZZLE ====================
         let draggedIndex = null;
         let puzzleSolved = false;
+        let dropCount = 0;
 
         function createVanillaPuzzle() {
             const grid = document.getElementById('vanillaGrid');
             grid.innerHTML = '';
             puzzleSolved = false;
+            dropCount = 0;
 
             const positions = ['0% 0%', '50% 0%', '100% 0%','0% 50%', '50% 50%', '100% 50%', '0% 100%', '50% 100%', '100% 100%'];
             positions.sort(() => Math.random() - 0.5);
@@ -503,7 +506,7 @@
             const temp = pieces[draggedIndex].style.backgroundPosition;
             pieces[draggedIndex].style.backgroundPosition = pieces[targetIndex].style.backgroundPosition;
             pieces[targetIndex].style.backgroundPosition = temp;
-
+            dropCount++;
             checkVanillaWin();
         }
 
@@ -515,7 +518,7 @@
             if (JSON.stringify(current) === JSON.stringify(correct)) {
                 puzzleSolved = true;
                 setTimeout(() => {
-                    alert("🎉 Congratulations! You solved the Mofusand Puzzle! ");
+                    alert("🎉 Congratulations! You solved the Mofusand Puzzle in " + dropCount + " moves!");
                 }, 300);
             }
         }
