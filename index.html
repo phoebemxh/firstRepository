@@ -117,7 +117,6 @@
             z-index: 1000;
         }
 
-
         .puzzle-modal.active { display: flex; } /*display:none;(default) When .active is added, becomes display:flex; so it appears*/
 
         /* === Vanilla Puzzle Modal === */
@@ -144,6 +143,14 @@
             height: 420px;
         }
 
+        .mofusand-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);     /*make 3 columns with equal column space(1 fraction)*/
+            gap: 10px;
+            width: 450px;
+            height: 420px;
+        }
+
         .puzzle-piece {
             width: 200px;
             height: 200px;
@@ -157,6 +164,20 @@
         }
 
         .puzzle-piece:active { cursor: grabbing; }   /* when clicks and holds, cursor changes to grabbing icon*/
+
+        .mofusand-piece {
+            width: 140px;
+            height: 140px;
+            background-image: url('https://whatsticker.online/stickers_asset/ws-pack-714673IhVuopq/2001dde0f4f75f5.png');
+            background-size: 420px 420px;
+            border: 3px solid #fff;
+            border-radius: 12px;
+            cursor: grab;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            touch-action: none;  /*very important*/
+        }
+
+        .mofusand-piece:active { cursor: grabbing; }   /* when clicks and holds, cursor changes to grabbing icon*/
 
         .puzzle-grid.solved {
             margin: 0;
@@ -233,8 +254,8 @@
                 <div class="fun-facts-grid">
                     <div class="fact-card">
                         <span class="emoji">🌈</span>
-                        <h3>Color Addict</h3>
-                        <p>I can't live without bright and happy colors</p>
+                        <h3>An unusual experience</h3>
+                        <p>I had tadpoles, and they grew into frogs</p>
                     </div>
                     <div class="fact-card">
                         <span class="emoji">🎵</span>
@@ -242,13 +263,13 @@
                         <p>I listen to music almost every day</p>
                     </div>
                     <div class="fact-card">
-                        <span class="emoji">🌟</span>
-                        <h3>Creative Soul</h3>
-                        <p>I love making things look beautiful</p>
+                        <span class="emoji">🍫</span>
+                        <h3>Chocolate hater</h3>
+                        <p>I do not like chocolate</p>
                     </div>
                     <div class="fact-card">
                         <span class="emoji">☕</span>
-                        <h3>Coffee + Code</h3>
+                        <h3>Tea + Code</h3>
                         <p>My perfect combo for a productive day</p>
                     </div>
                 </div>
@@ -258,13 +279,13 @@
                 See My Favourite Cartoon Character 🧩
             </button>
 
-            <!-- Plain Puzzle Button -->
-            <button onclick="openVanillaPuzzle()" class="btn" style="background: linear-gradient(90deg, #4facfe, #9d4edd);">
-                Snoopy Puzzle (Plain HTML) 🧩
+            <!-- Plain html Puzzle Button -->
+            <button onclick="openVanillaPuzzle()" class="btn" >
+                Another Character I Like 🧩
             </button>
 
             <button @click="playSong" class="btn">
-                Play My Favorite Song 🎵
+                Play My Favorite Trio 🎵
             </button>
 
             <p style="margin-top: 2rem; font-size: 1.3rem; opacity: 0.9;">
@@ -278,7 +299,7 @@
             <div class="puzzle-container">
                 <h2 style="text-align:center; margin-bottom: 20px;">Snoopy Puzzle 🐶
                     <span v-if="isSolved" style="color:#4caf50; font-size:1.1rem;">(Solved! 🎉)</span>
-                    <span v-if="!isSolved" style="color:#4caf50; font-size:1.1rem;">(Drag the pieces)</span>
+                    <span v-if="!isSolved" style="color:#ac8825; font-size:1.1rem;">(Drag the pieces)</span>
                 </h2>
                 <div class="puzzle-grid" :class="{ solved: isSolved }">
                     <div v-for="(piece, i) in puzzlePieces"
@@ -302,8 +323,8 @@
 
     <div id="vanillaPuzzleModal">
         <div class="puzzle-container">
-            <h2>Snoopy Puzzle (Plain HTML) 🐶</h2>
-            <div id="vanillaGrid" class="puzzle-grid"></div>
+            <h2>Mofusand Puzzle 🐱</h2>
+            <div id="vanillaGrid" class="mofusand-grid"></div>
             <button onclick="closeVanillaPuzzle()" style="margin-top:20px; padding:12px 30px; background:#ff6b6b; color:white; border:none; border-radius:30px; cursor:pointer;">
                 Close Puzzle
             </button>
@@ -408,9 +429,10 @@
                     e.dataTransfer.setDragImage(piece, 100, 100);   // 100,100 = center of the piece
                 },
 
+                //firefox fix function
                 dragOver(e) {
                     if (!this.isSolved) {
-                        e.preventDefault();           // Very important for Firefox
+                        e.preventDefault();           // this line important for Firefox
                         e.dataTransfer.dropEffect = 'move';
                     }
                 },
@@ -432,17 +454,19 @@
 
         // ==================== VANILLA JAVASCRIPT PUZZLE ====================
         let draggedIndex = null;
+        let puzzleSolved = false;
 
         function createVanillaPuzzle() {
             const grid = document.getElementById('vanillaGrid');
             grid.innerHTML = '';
+            puzzleSolved = false;
 
-            const positions = ['0% 0%', '100% 0%', '0% 100%', '100% 100%'];
+            const positions = ['0% 0%', '50% 0%', '100% 0%','0% 50%', '50% 50%', '100% 50%', '0% 100%', '50% 100%', '100% 100%'];
             positions.sort(() => Math.random() - 0.5);
 
             positions.forEach((pos, i) => {
                 const piece = document.createElement('div');
-                piece.className = 'puzzle-piece';
+                piece.className = 'mofusand-piece';
                 piece.draggable = true;
                 piece.style.backgroundPosition = pos;
                 piece.dataset.index = i;
@@ -451,14 +475,15 @@
                 piece.addEventListener('dragover', e => e.preventDefault());
                 piece.addEventListener('drop', drop);
                 piece.addEventListener('dragend', dragEnd);
-
                 grid.appendChild(piece);
             });
         }
 
         function dragStart(e) {
-            draggedIndex = parseInt(e.target.dataset.index);
-            e.target.style.opacity = '0.6';
+            if (!puzzleSolved){
+                draggedIndex = parseInt(e.target.dataset.index);
+                e.target.style.opacity = '0.6';
+            }
         }
 
         function dragEnd(e) {
@@ -466,6 +491,7 @@
         }
 
         function drop(e) {
+            if (puzzleSolved) return;
             e.preventDefault();
             const targetIndex = parseInt(e.target.dataset.index);
             if (draggedIndex === null || draggedIndex === targetIndex) return;
@@ -482,13 +508,14 @@
         }
 
         function checkVanillaWin() {
-            const correct = ['0% 0%', '100% 0%', '0% 100%', '100% 100%'];
+            const correct = ['0% 0%', '50% 0%', '100% 0%','0% 50%', '50% 50%', '100% 50%', '0% 100%', '50% 100%', '100% 100%'];
             const current = Array.from(document.getElementById('vanillaGrid').children)
                                 .map(p => p.style.backgroundPosition);
 
             if (JSON.stringify(current) === JSON.stringify(correct)) {
+                puzzleSolved = true;
                 setTimeout(() => {
-                    alert("🎉 Congratulations! You solved the Snoopy Puzzle! 🐶");
+                    alert("🎉 Congratulations! You solved the Mofusand Puzzle! ");
                 }, 300);
             }
         }
